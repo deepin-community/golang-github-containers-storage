@@ -1,15 +1,99 @@
-Source: template-repository
-Section: unknown
+Source: golang-github-containers-storage
+Section: devel
 Priority: optional
-Maintainer: Tsic404 <liuheng@deepin.org>
-Build-Depends: debhelper (>= 11)
-Standards-Version: 4.1.3
-Homepage: https://github.com/deepin-community/template-repository
-#Vcs-Browser: https://salsa.debian.org/debian/deepin-community-template-repository
-#Vcs-Git: https://salsa.debian.org/debian/deepin-community-template-repository.git
+Maintainer: Debian Go Packaging Team <team+pkg-go@tracker.debian.org>
+Uploaders: Reinhard Tartler <siretart@tauware.de>,
+           Dmitry Smirnov <onlyjob@debian.org>
+Build-Depends: debhelper-compat (= 11),
+               dh-golang,
+               ffjson,
+               go-md2man,
+               golang-github-burntsushi-toml-dev,
+               golang-github-containerd-btrfs-dev (>= 1.0.0),
+               golang-github-containerd-stargz-snapshotter-dev (>= 0.8.0-3),
+               golang-github-cyphar-filepath-securejoin-dev,
+               golang-github-docker-go-units-dev,
+               golang-github-google-go-intervals-dev,
+               golang-github-gotestyourself-gotest.tools-dev,
+               golang-github-hashicorp-go-multierror-dev,
+               golang-github-json-iterator-go-dev,
+               golang-github-klauspost-compress-dev,
+               golang-github-klauspost-pgzip-dev,
+               golang-github-mattn-go-shellwords-dev,
+               golang-github-moby-sys-dev,
+               golang-github-opencontainers-go-digest-dev,
+               golang-github-opencontainers-runc-dev,
+               golang-github-opencontainers-selinux-dev (>= 1.5.0),
+               golang-github-opencontainers-specs-dev,
+               golang-github-pkg-errors-dev,
+               golang-github-sirupsen-logrus-dev,
+               golang-github-stretchr-testify-dev,
+               golang-github-ulikunitz-xz-dev,
+               golang-github-vbatts-tar-split-dev,
+               golang-go (>> 2:1.14~~),
+               golang-go-patricia-dev,
+               golang-go-zfs-dev,
+               golang-gocapability-dev,
+               golang-golang-x-net-dev,
+               golang-golang-x-sys-dev (>> 0.0~git20201223),
+               libbtrfs-dev,
+               libdevmapper-dev
+Standards-Version: 4.5.0
+Homepage: https://github.com/containers/storage
+Vcs-Browser: https://salsa.debian.org/go-team/packages/golang-github-containers-storage
+Vcs-Git: https://salsa.debian.org/go-team/packages/golang-github-containers-storage.git
+XS-Go-Import-Path: github.com/containers/storage
+Testsuite: autopkgtest-pkg-go
+Rules-Requires-Root: no
 
-Package: template-repository
+Package: golang-github-containers-storage-dev
+Architecture: all
+Depends: golang-github-burntsushi-toml-dev,
+         golang-github-containerd-stargz-snapshotter-dev,
+         golang-github-cyphar-filepath-securejoin-dev,
+         golang-github-docker-go-units-dev,
+         golang-github-google-go-intervals-dev,
+         golang-github-gotestyourself-gotest.tools-dev,
+         golang-github-hashicorp-go-multierror-dev,
+         golang-github-json-iterator-go-dev,
+         golang-github-klauspost-compress-dev,
+         golang-github-klauspost-pgzip-dev,
+         golang-github-mattn-go-shellwords-dev,
+         golang-github-moby-sys-dev,
+         golang-github-opencontainers-go-digest-dev,
+         golang-github-opencontainers-runc-dev,
+         golang-github-opencontainers-selinux-dev (>= 1.0.0),
+         golang-github-opencontainers-specs-dev,
+         golang-github-pkg-errors-dev,
+         golang-github-sirupsen-logrus-dev,
+         golang-github-stretchr-testify-dev,
+         golang-github-ulikunitz-xz-dev,
+         golang-github-vbatts-tar-split-dev,
+         golang-go-patricia-dev,
+         golang-go-zfs-dev,
+         golang-gocapability-dev,
+         golang-golang-x-net-dev,
+         golang-golang-x-sys-dev,
+         libbtrfs-dev,
+         libdevmapper-dev,
+         ${misc:Depends}
+Breaks: golang-github-containers-buildah-dev (<< 1.37),
+        golang-github-containers-image-dev (<< 5.32),
+        libpod (<< 5.2)
+Description: Go library for handling how containers are stored on disk
+ storage is a Go library which aims to provide methods for storing
+ filesystem layers, container images, and containers.  A containers-storage
+ CLI wrapper is also included for manual and scripting use.
+ .
+ This package contains the library.
+
+Package: containers-storage
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: <insert up to 60 chars description>
- <insert long description, indented with spaces>
+Built-Using: ${misc:Built-Using}
+Depends: uidmap, ${misc:Depends}, ${shlibs:Depends}
+Description: CLI tools for handling how containers are stored on disk
+ storage is a Go library which aims to provide methods for storing
+ filesystem layers, container images, and containers.  A containers-storage
+ CLI wrapper is also included for manual and scripting use.
+ .
+ This package contains the CLI tools.

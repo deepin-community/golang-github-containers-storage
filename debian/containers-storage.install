@@ -1,0 +1,2 @@
+storage.conf /usr/share/containers
+usr/bin/containers-storage

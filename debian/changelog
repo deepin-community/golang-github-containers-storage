@@ -1,5 +1,452 @@
-template-repository (1.0-1) unstable; urgency=medium
+golang-github-containers-storage (1.55.0+ds1-3) unstable; urgency=medium
 
-  * Initial release
+  * Upload to unstable.
 
- -- Tsic404 <liuheng@deepin.org>  Sat, 28 Jan 2023 13:46:49 +0800
+ -- Reinhard Tartler <siretart@tauware.de>  Sat, 17 Aug 2024 07:30:07 -0400
+
+golang-github-containers-storage (1.55.0+ds1-2) experimental; urgency=medium
+
+  * containers-storage: rename, allow output on stderr
+  * Tighten breaks on containers/{image,buildah}
+
+ -- Reinhard Tartler <siretart@tauware.de>  Wed, 07 Aug 2024 07:44:11 -0400
+
+golang-github-containers-storage (1.55.0+ds1-1) experimental; urgency=medium
+
+  * New upstream release: v1.55.0
+  * Drop issue1715.patch, no longer needed
+  * Skip TestAttachLoopbackDeviceRace if /dev/loop-control is absent
+  * debian/copyright: clarify and simplify
+  * Drop depends on ffjson, not needed
+  * cleanup dependencies on xz/std compressors
+  * Add some basic autopkgtests
+  * Make containers-storage depend on uidmap
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sun, 04 Aug 2024 17:07:52 -0400
+
+golang-github-containers-storage (1.53.0+ds1-2) unstable; urgency=medium
+
+  * Upload to unstable
+
+ -- Reinhard Tartler <siretart@tauware.de>  Fri, 26 Jul 2024 22:42:58 +0200
+
+golang-github-containers-storage (1.53.0+ds1-1) experimental; urgency=medium
+
+  * New upstream release: v1.53.0
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sat, 09 Mar 2024 14:51:41 -0500
+
+golang-github-containers-storage (1.52.0+ds1-1) experimental; urgency=medium
+
+  * New upstream release: v1.52.0
+
+ -- Reinhard Tartler <siretart@tauware.de>  Fri, 09 Feb 2024 11:34:35 -0500
+
+golang-github-containers-storage (1.51.0+ds1-2) unstable; urgency=medium
+
+  * Upload to unstable
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sun, 21 Jan 2024 14:58:21 -0500
+
+golang-github-containers-storage (1.51.0+ds1-1) experimental; urgency=medium
+
+  * New upstream release: v1.51.0
+
+ -- Reinhard Tartler <siretart@tauware.de>  Tue, 21 Nov 2023 17:46:03 -0500
+
+golang-github-containers-storage (1.50.2+ds1-2) unstable; urgency=medium
+
+  * Upload to unstable
+
+ -- Reinhard Tartler <siretart@tauware.de>  Wed, 25 Oct 2023 17:40:51 -0400
+
+golang-github-containers-storage (1.50.2+ds1-1) experimental; urgency=medium
+
+  * New upstream release
+
+ -- Reinhard Tartler <siretart@tauware.de>  Fri, 22 Sep 2023 09:25:50 -0400
+
+golang-github-containers-storage (1.48.1+ds1-2) unstable; urgency=medium
+
+  * Upload to debian/unstable
+
+ -- Reinhard Tartler <siretart@tauware.de>  Wed, 20 Sep 2023 06:45:34 -0400
+
+golang-github-containers-storage (1.48.1+ds1-1) experimental; urgency=medium
+
+  * New upstream release
+  * Disable two upstream tests that fail during the package build
+
+ -- Reinhard Tartler <siretart@tauware.de>  Thu, 14 Sep 2023 11:45:46 -0400
+
+golang-github-containers-storage (1.46.1+ds1-4) unstable; urgency=medium
+
+  * Fix typo in Breaks declaration in previous upload
+
+ -- Reinhard Tartler <siretart@tauware.de>  Tue, 12 Sep 2023 06:52:14 -0400
+
+golang-github-containers-storage (1.46.1+ds1-3) unstable; urgency=medium
+
+  * Add Versioned Breaks to help testing migration
+
+ -- Reinhard Tartler <siretart@tauware.de>  Mon, 11 Sep 2023 09:53:05 -0400
+
+golang-github-containers-storage (1.46.1+ds1-2) unstable; urgency=medium
+
+  * Upload to unstable
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sat, 09 Sep 2023 10:58:54 -0400
+
+golang-github-containers-storage (1.46.1+ds1-1) experimental; urgency=medium
+
+  * New upstream release
+
+ -- Reinhard Tartler <siretart@tauware.de>  Fri, 14 Jul 2023 15:32:49 -0400
+
+golang-github-containers-storage (1.45.1+ds1-2) experimental; urgency=medium
+
+  * Merge in changes from debian/sid
+  * Drop btrfs patch, merged upstream
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sun, 05 Feb 2023 09:48:29 -0500
+
+golang-github-containers-storage (1.45.1+ds1-1) experimental; urgency=medium
+
+  * New upstream release
+  * drop patches
+
+ -- Reinhard Tartler <siretart@tauware.de>  Thu, 19 Jan 2023 03:00:07 -0500
+
+golang-github-containers-storage (1.43.0+ds1-8) unstable; urgency=medium
+
+  * [PATCH] unshare: fix creating a userns when running as root
+     - critical when run as UID 0, but without CAP_SYS_ADMIN
+  * [PATCH] overlay: fix call to clone on s390x
+     - critical for non-root invocations on s390x
+  * [PATCH] options: reject empty runroot or graphroot (Closes: #1034871)
+     - can avoid serious dataloss when used on btrfs,
+       cf. https://github.com/containers/podman/issues/18349
+
+ -- Reinhard Tartler <siretart@tauware.de>  Fri, 28 Apr 2023 17:48:12 -0400
+
+golang-github-containers-storage (1.43.0+ds1-7) unstable; urgency=medium
+
+  * Team upload
+  * Refresh btrfs patch to build with old versions
+
+ -- Shengjing Zhu <zhsj@debian.org>  Tue, 10 Jan 2023 14:49:18 +0800
+
+golang-github-containers-storage (1.43.0+ds1-6) unstable; urgency=medium
+
+  * Tighten dependency on libbtrfs-dev (>> 6.1) also for the -dev package
+
+ -- Reinhard Tartler <siretart@tauware.de>  Thu, 29 Dec 2022 07:28:54 -0500
+
+golang-github-containers-storage (1.43.0+ds1-5) unstable; urgency=medium
+
+  * Tighten dependency on libbtrfs-dev (>> 6.1)
+
+ -- Reinhard Tartler <siretart@tauware.de>  Wed, 28 Dec 2022 22:51:20 -0500
+
+golang-github-containers-storage (1.43.0+ds1-4) unstable; urgency=medium
+
+  * Fix FTBFS golang-containerd-btrfs 1.0, closes: #1027116, #1027116
+
+ -- Reinhard Tartler <siretart@tauware.de>  Wed, 28 Dec 2022 10:59:14 -0500
+
+golang-github-containers-storage (1.43.0+ds1-3) unstable; urgency=medium
+
+  * Team upload
+  * Add missing dependency on golang-github-cyphar-filepath-securejoin-dev
+
+ -- Benjamin Drung <bdrung@debian.org>  Wed, 14 Dec 2022 13:20:36 +0100
+
+golang-github-containers-storage (1.43.0+ds1-2) unstable; urgency=medium
+
+  * Upload to unstable
+
+ -- Reinhard Tartler <siretart@tauware.de>  Thu, 24 Nov 2022 08:41:35 -0500
+
+golang-github-containers-storage (1.43.0+ds1-1) experimental; urgency=medium
+
+  * New upstream release, targeted at podman 4.3
+
+ -- Reinhard Tartler <siretart@tauware.de>  Fri, 11 Nov 2022 14:38:05 -0500
+
+golang-github-containers-storage (1.42.0+ds1-1) experimental; urgency=medium
+
+  * New upstream relesae, targeted at podman 4.2
+
+ -- Reinhard Tartler <siretart@tauware.de>  Tue, 16 Aug 2022 09:14:30 +0200
+
+golang-github-containers-storage (1.41.0+ds1-1) experimental; urgency=medium
+
+  * New upstream relesae, targeted at podman 4.1
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sat, 14 May 2022 11:21:53 -0400
+
+golang-github-containers-storage (1.38.2+ds1-1) experimental; urgency=medium
+
+  * New upstream release, targeted at podman 4.0
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sat, 05 Feb 2022 09:35:10 -0500
+
+golang-github-containers-storage (1.37.0+ds1-1) experimental; urgency=medium
+
+  * New upstream release, targeted at podman 4.0
+
+ -- Reinhard Tartler <siretart@tauware.de>  Tue, 11 Jan 2022 07:06:56 -0500
+
+golang-github-containers-storage (1.36.0+ds1-3) unstable; urgency=medium
+
+  * re-enable estargz support
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sat, 06 Nov 2021 11:40:57 -0400
+
+golang-github-containers-storage (1.36.0+ds1-2) unstable; urgency=medium
+
+  * Upload to unstable
+
+ -- Reinhard Tartler <siretart@tauware.de>  Mon, 25 Oct 2021 15:19:59 -0400
+
+golang-github-containers-storage (1.36.0+ds1-1) experimental; urgency=medium
+
+  * New upstream release, Closes: #995064
+  * Disable estargz support to work around #994601
+
+ -- Reinhard Tartler <siretart@tauware.de>  Wed, 22 Sep 2021 18:04:30 -0400
+
+golang-github-containers-storage (1.34.1+ds1-1) unstable; urgency=medium
+
+  * New upstream release, Closes: #992140
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sat, 28 Aug 2021 17:25:02 +0200
+
+golang-github-containers-storage (1.31.3+ds1-1) experimental; urgency=medium
+
+  * New upstream release
+
+ -- Reinhard Tartler <siretart@tauware.de>  Fri, 04 Jun 2021 18:37:25 -0400
+
+golang-github-containers-storage (1.29.0+ds1-1) experimental; urgency=medium
+
+  * New upstream release 1.29.0
+    - fixes: "CVE-2021-20291", thanks to Moritz Muehlenhoff (Closes: #988942).
+
+ -- Reinhard Tartler <siretart@tauware.de>  Fri, 28 May 2021 11:43:08 -0400
+
+golang-github-containers-storage (1.28.1+ds1-1) experimental; urgency=medium
+
+  * New upstream version 1.28.1+ds1
+
+ -- Reinhard Tartler <siretart@tauware.de>  Fri, 02 Apr 2021 16:49:45 -0400
+
+golang-github-containers-storage (1.25.0+dfsg1-1) experimental; urgency=medium
+
+  * New upstream version 1.25.0+dfsg1
+  * Add explicit dependency on golang-github-moby-sys-dev, closes: #976217
+
+ -- Reinhard Tartler <siretart@tauware.de>  Tue, 09 Feb 2021 10:13:16 -0500
+
+golang-github-containers-storage (1.24.8+dfsg1-2) unstable; urgency=high
+
+  * Build against system copy of golang-github-ulikunitz-xz-dev,
+    Adresses: CVE-2021-20291, Closes: #988942
+
+ -- Reinhard Tartler <siretart@tauware.de>  Fri, 21 May 2021 16:04:46 -0400
+
+golang-github-containers-storage (1.24.8+dfsg1-1) unstable; urgency=medium
+
+  * New upstream release, focused on targetted bugfixes for podman 3.0
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sun, 21 Feb 2021 14:40:55 -0500
+
+golang-github-containers-storage (1.24.5+dfsg1-2) unstable; urgency=medium
+
+  * Upload to unstable
+
+ -- Reinhard Tartler <siretart@tauware.de>  Tue, 02 Feb 2021 14:54:51 -0500
+
+golang-github-containers-storage (1.24.5+dfsg1-1) experimental; urgency=medium
+
+  * bump build-dependency on golang-golang-x-sys-dev
+  * New upstream version 1.24.5+dfsg1
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sun, 24 Jan 2021 07:55:50 -0500
+
+golang-github-containers-storage (1.24.3+dfsg1-2) experimental; urgency=medium
+
+  * Force using the standard go-compiler
+
+ -- Reinhard Tartler <siretart@tauware.de>  Mon, 14 Dec 2020 10:50:09 -0500
+
+golang-github-containers-storage (1.24.3+dfsg1-1) experimental; urgency=medium
+
+  * New upstream version 1.24.3+dfsg1
+
+ -- Reinhard Tartler <siretart@tauware.de>  Mon, 14 Dec 2020 07:20:55 -0500
+
+golang-github-containers-storage (1.23.9+dfsg1-1) unstable; urgency=medium
+
+  * New upstream version 1.23.9+dfsg1
+
+ -- Reinhard Tartler <siretart@tauware.de>  Mon, 23 Nov 2020 17:05:11 -0500
+
+golang-github-containers-storage (1.23.5+dfsg1-1) unstable; urgency=medium
+
+  * debian/copyright: update using cme update dpkg-copyright
+  * New upstream version 1.23.5+dfsg1
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sat, 21 Nov 2020 15:20:52 -0500
+
+golang-github-containers-storage (1.23.4+dfsg1-1) unstable; urgency=medium
+
+  * New upstream version 1.23.4+dfsg1
+  * Add distro patch to skip TestDefaultStoreOpts
+
+ -- Reinhard Tartler <siretart@tauware.de>  Wed, 09 Sep 2020 22:27:09 -0400
+
+golang-github-containers-storage (1.21.2+dfsg1-1) unstable; urgency=medium
+
+  * New upstream version 1.21.2+dfsg1
+  * debian/control: depend on golang-github-opencontainers-specs-dev
+  * drop patches, applied upstream
+  * Provide existant $HOME for tests
+  * debian/control: depend on golang-github-golang-github-hashicorp-go-multierror-dev
+
+ -- Reinhard Tartler <siretart@tauware.de>  Fri, 24 Jul 2020 06:40:48 -0400
+
+golang-github-containers-storage (1.20.2-3) unstable; urgency=medium
+
+  * Upload to unstable
+
+ -- Reinhard Tartler <siretart@tauware.de>  Mon, 20 Jul 2020 06:45:35 -0400
+
+golang-github-containers-storage (1.20.2-2) experimental; urgency=medium
+
+  * unbreak build on mipsen
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sun, 19 Jul 2020 15:27:37 -0400
+
+golang-github-containers-storage (1.20.2-1) experimental; urgency=medium
+
+  * New upstream version: 1.20.2
+  * remove local patches, all merged upstream
+  * Exclude tests in pkg/unshare
+
+ -- Reinhard Tartler <siretart@tauware.de>  Thu, 09 Jul 2020 21:00:38 -0400
+
+golang-github-containers-storage (1.18.2+dfsg1-1) experimental; urgency=medium
+
+  * New upstream version 1.18.2+dfsg1
+  * pick up new dependencies
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sun, 19 Apr 2020 18:12:56 -0400
+
+golang-github-containers-storage (1.15.8+dfsg1-2) unstable; urgency=medium
+
+  * Add patch to fix FTBFS on mipsen
+
+ -- Reinhard Tartler <siretart@tauware.de>  Fri, 29 May 2020 06:44:22 -0400
+
+golang-github-containers-storage (1.15.8+dfsg1-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Standards-Version: 4.5.0.
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Wed, 05 Feb 2020 11:05:13 +1100
+
+golang-github-containers-storage (1.15.7+dfsg1-1) unstable; urgency=medium
+
+  * New upstream release.
+  * control: set "Rules-Requires-Root: no".
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Sun, 26 Jan 2020 20:40:19 +1100
+
+golang-github-containers-storage (1.15.5+dfsg1-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Sun, 29 Dec 2019 22:57:42 +1100
+
+golang-github-containers-storage (1.15.3+dfsg1-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Sun, 15 Dec 2019 14:51:36 +1100
+
+golang-github-containers-storage (1.15.2+dfsg1-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Tue, 10 Dec 2019 19:06:27 +1100
+
+golang-github-containers-storage (1.15.1+dfsg1-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Sun, 01 Dec 2019 03:17:29 +1100
+
+golang-github-containers-storage (1.13.5+dfsg1-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Install "containers-storage.conf.5" man page.
+  * Install example "storage.conf".
+  * Updated "watch" file to fix L/W: debian-watch-file-should-mangle-version.
+  * (Build-)Depends:
+    - golang-github-ostreedev-ostree-go-dev
+    - libostree-dev
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Tue, 12 Nov 2019 08:48:35 +1100
+
+golang-github-containers-storage (1.13.2+dfsg1-3) unstable; urgency=medium
+
+  * Build with "ostree" tag.
+  * Standards-Version: 4.4.1.
+  * Added myself to Uploaders.
+  * Switched to the original "ostreedev/ostree-go" library.
+  * (Build-)Depends:
+    - golang-github-sjoerdsimons-ostree-go-dev
+    + golang-github-ostreedev-ostree-go-dev
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Mon, 11 Nov 2019 13:51:54 +1100
+
+golang-github-containers-storage (1.13.2+dfsg1-2) unstable; urgency=medium
+
+  * Team upload.
+
+  [ Dmitry Smirnov ]
+  * New patch to fix FTBFS on mips.
+
+  [ Arnaud Rebillout ]
+  * New upstream patch to fix build against docker-dev 19.03.
+  * Removed "golang-github-docker-docker-dev" from (Build-)Depends.
+
+ -- Arnaud Rebillout <arnaud.rebillout@collabora.com>  Fri, 01 Nov 2019 11:19:03 +0700
+
+golang-github-containers-storage (1.13.2+dfsg1-1) unstable; urgency=medium
+
+  [ Reinhard Tartler ]
+  * Prepare new upload
+  * New upstream requires golang-github-datadog-zstd-dev
+
+  [ Dmitry Smirnov ]
+  * Added "Built-Using" field to binary package.
+  * dev: added missing ostree dependency; new patch to use available fork.
+
+  [ Reinhard Tartler ]
+  * New upstream version 1.13.2
+
+ -- Reinhard Tartler <siretart@tauware.de>  Wed, 11 Sep 2019 07:51:52 -0400
+
+golang-github-containers-storage (1.12.2-1) experimental; urgency=medium
+
+  * New upstream version
+
+ -- Reinhard Tartler <siretart@tauware.de>  Wed, 10 Apr 2019 08:12:52 -0400
+
+golang-github-containers-storage (1.5-1) experimental; urgency=medium
+
+  * Initial release (Closes: #921949)
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sun, 10 Feb 2019 08:23:47 -0500
