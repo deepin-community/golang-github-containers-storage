@@ -1,4 +1,33 @@
 #!/usr/bin/make -f
 
+export DH_GOLANG_GO_GENERATE := 1
+export DEB_BUILD_MAINT_OPTIONS := optimize=-lto
+export DH_GOLANG_INSTALL_EXTRA := $(wildcard types/*.conf) VERSION
+
+override_dh_auto_test:
+ifeq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
+	# Some tests require root privileges. Upstream provides
+	# scripts to easily setup test VMs using vagrant, which
+	# is not appropriate in a debian package build.
+	mkdir -p -m700 $(CURDIR)/debian/tmp-home/.cache
+	mkdir -p -m700 $(CURDIR)/debian/tmp-home/.config
+	mkdir -p -m700 $(CURDIR)/debian/tmp-home/.local/share
+	mkdir -p -m700 $(CURDIR)/debian/tmp-home/run
+	env \
+	  HOME=$(CURDIR)/debian/tmp-home/.cache \
+	  XDG_CACHE_HOME=$(CURDIR)/debian/tmp-home/.cache \
+	  XDG_CONFIG_HOME=$(CURDIR)/debian/tmp-home/.config \
+	  XDG_DATA_HOME=$(CURDIR)/debian/tmp-home/.local/share \
+	  XDG_RUNTIME_DIR=$(CURDIR)/debian/tmp-home/run \
+	  PATH="$(CURDIR)/_output/bin:$$PATH" \
+	  DH_GOLANG_EXCLUDES="drivers/aufs drivers/btrfs drivers/devmapper drivers/overlay drivers/vfs drivers/zfs pkg/archive pkg/chrootarchive pkg/idtools pkg/mount pkg/system pkg/unshare pkg/directory pkg/fileutils" \
+	dh_auto_test -v
+	rm -rf $(CURDIR)/debian/tmp-home
+endif
+
 %:
-	dh $@
+	dh $@ --buildsystem=golang --with=golang --ignore=bin/example
+
+override_dh_installman:
+	make -C docs GOMD2MAN=go-md2man
+	dh_installman -pcontainers-storage docs/*.1 docs/*.5

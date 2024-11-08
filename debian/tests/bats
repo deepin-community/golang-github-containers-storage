@@ -1,0 +1,5 @@
+#!/bin/bash
+
+export STORAGE_BINARY=/usr/bin/containers-storage
+
+cd tests && exec ./test_runner.bash "$@"
