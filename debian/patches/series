@@ -1,0 +1,2 @@
+TestCheckDetectWriteable-skip.patch
+Skip-TestAttachLoopbackDeviceRace.patch

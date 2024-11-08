@@ -1,0 +1,14 @@
+Tests: build-only
+Depends: dh-golang, golang-any, golang-github-containers-storage-dev
+Restrictions: allow-stderr
+
+Tests: containers-storage-cli
+Depends: containers-storage
+Restrictions: allow-stderr, needs-root, skippable
+
+Tests: bats
+Architecture: amd64, arm64
+Depends: bats,
+         @,
+         @recommends@
+Restrictions: allow-stderr, needs-internet, isolation-machine, needs-root

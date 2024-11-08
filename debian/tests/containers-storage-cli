@@ -1,0 +1,20 @@
+#!/bin/sh
+
+set -eux
+
+# who are we running as
+id
+
+if ! containers-storage status; then
+   echo "Basic sanity check failed, is /etc/subuid setup correctly?"
+   echo "contents of /etc/subuid"
+   cat /etc/subuid
+   echo "contents of /etc/subgid"
+   cat /etc/subgid
+   exit 77
+fi
+
+containers-storage containers
+containers-storage images
+containers-storage gc
+containers-storage check
