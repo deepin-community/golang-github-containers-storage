@@ -1,7 +1,8 @@
 package truncindex
 
 import (
-	"math/rand"
+	"math/rand/v2"
+	"slices"
 	"testing"
 	"time"
 
@@ -114,13 +115,9 @@ func assertIndexIterate(t *testing.T) {
 	index := NewTruncIndex(ids)
 
 	index.Iterate(func(targetId string) {
-		for _, id := range ids {
-			if targetId == id {
-				return
-			}
+		if !slices.Contains(ids, targetId) {
+			t.Fatalf("An unknown ID '%s'", targetId)
 		}
-
-		t.Fatalf("An unknown ID '%s'", targetId)
 	})
 }
 
@@ -159,11 +156,11 @@ func assertIndexGet(t *testing.T, index *TruncIndex, input, expectedResult strin
 
 func BenchmarkTruncIndexAdd100(b *testing.B) {
 	var testSet []string
-	for i := 0; i < 100; i++ {
+	for range 100 {
 		testSet = append(testSet, stringid.GenerateNonCryptoID())
 	}
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for range b.N {
 		index := NewTruncIndex([]string{})
 		for _, id := range testSet {
 			if err := index.Add(id); err != nil {
@@ -175,11 +172,11 @@ func BenchmarkTruncIndexAdd100(b *testing.B) {
 
 func BenchmarkTruncIndexAdd250(b *testing.B) {
 	var testSet []string
-	for i := 0; i < 250; i++ {
+	for range 250 {
 		testSet = append(testSet, stringid.GenerateNonCryptoID())
 	}
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for range b.N {
 		index := NewTruncIndex([]string{})
 		for _, id := range testSet {
 			if err := index.Add(id); err != nil {
@@ -191,11 +188,11 @@ func BenchmarkTruncIndexAdd250(b *testing.B) {
 
 func BenchmarkTruncIndexAdd500(b *testing.B) {
 	var testSet []string
-	for i := 0; i < 500; i++ {
+	for range 500 {
 		testSet = append(testSet, stringid.GenerateNonCryptoID())
 	}
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for range b.N {
 		index := NewTruncIndex([]string{})
 		for _, id := range testSet {
 			if err := index.Add(id); err != nil {
@@ -208,7 +205,7 @@ func BenchmarkTruncIndexAdd500(b *testing.B) {
 func BenchmarkTruncIndexGet100(b *testing.B) {
 	var testSet []string
 	var testKeys []string
-	for i := 0; i < 100; i++ {
+	for range 100 {
 		testSet = append(testSet, stringid.GenerateNonCryptoID())
 	}
 	index := NewTruncIndex([]string{})
@@ -216,11 +213,11 @@ func BenchmarkTruncIndexGet100(b *testing.B) {
 		if err := index.Add(id); err != nil {
 			b.Fatal(err)
 		}
-		l := rand.Intn(12) + 12
+		l := rand.IntN(12) + 12
 		testKeys = append(testKeys, id[:l])
 	}
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for range b.N {
 		for _, id := range testKeys {
 			if res, err := index.Get(id); err != nil {
 				b.Fatal(res, err)
@@ -232,7 +229,7 @@ func BenchmarkTruncIndexGet100(b *testing.B) {
 func BenchmarkTruncIndexGet250(b *testing.B) {
 	var testSet []string
 	var testKeys []string
-	for i := 0; i < 250; i++ {
+	for range 250 {
 		testSet = append(testSet, stringid.GenerateNonCryptoID())
 	}
 	index := NewTruncIndex([]string{})
@@ -240,11 +237,11 @@ func BenchmarkTruncIndexGet250(b *testing.B) {
 		if err := index.Add(id); err != nil {
 			b.Fatal(err)
 		}
-		l := rand.Intn(12) + 12
+		l := rand.IntN(12) + 12
 		testKeys = append(testKeys, id[:l])
 	}
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for range b.N {
 		for _, id := range testKeys {
 			if res, err := index.Get(id); err != nil {
 				b.Fatal(res, err)
@@ -256,7 +253,7 @@ func BenchmarkTruncIndexGet250(b *testing.B) {
 func BenchmarkTruncIndexGet500(b *testing.B) {
 	var testSet []string
 	var testKeys []string
-	for i := 0; i < 500; i++ {
+	for range 500 {
 		testSet = append(testSet, stringid.GenerateNonCryptoID())
 	}
 	index := NewTruncIndex([]string{})
@@ -264,11 +261,11 @@ func BenchmarkTruncIndexGet500(b *testing.B) {
 		if err := index.Add(id); err != nil {
 			b.Fatal(err)
 		}
-		l := rand.Intn(12) + 12
+		l := rand.IntN(12) + 12
 		testKeys = append(testKeys, id[:l])
 	}
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for range b.N {
 		for _, id := range testKeys {
 			if res, err := index.Get(id); err != nil {
 				b.Fatal(res, err)
@@ -279,11 +276,11 @@ func BenchmarkTruncIndexGet500(b *testing.B) {
 
 func BenchmarkTruncIndexDelete100(b *testing.B) {
 	var testSet []string
-	for i := 0; i < 100; i++ {
+	for range 100 {
 		testSet = append(testSet, stringid.GenerateNonCryptoID())
 	}
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for range b.N {
 		b.StopTimer()
 		index := NewTruncIndex([]string{})
 		for _, id := range testSet {
@@ -302,11 +299,11 @@ func BenchmarkTruncIndexDelete100(b *testing.B) {
 
 func BenchmarkTruncIndexDelete250(b *testing.B) {
 	var testSet []string
-	for i := 0; i < 250; i++ {
+	for range 250 {
 		testSet = append(testSet, stringid.GenerateNonCryptoID())
 	}
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for range b.N {
 		b.StopTimer()
 		index := NewTruncIndex([]string{})
 		for _, id := range testSet {
@@ -325,11 +322,11 @@ func BenchmarkTruncIndexDelete250(b *testing.B) {
 
 func BenchmarkTruncIndexDelete500(b *testing.B) {
 	var testSet []string
-	for i := 0; i < 500; i++ {
+	for range 500 {
 		testSet = append(testSet, stringid.GenerateNonCryptoID())
 	}
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for range b.N {
 		b.StopTimer()
 		index := NewTruncIndex([]string{})
 		for _, id := range testSet {
@@ -348,33 +345,33 @@ func BenchmarkTruncIndexDelete500(b *testing.B) {
 
 func BenchmarkTruncIndexNew100(b *testing.B) {
 	var testSet []string
-	for i := 0; i < 100; i++ {
+	for range 100 {
 		testSet = append(testSet, stringid.GenerateNonCryptoID())
 	}
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for range b.N {
 		NewTruncIndex(testSet)
 	}
 }
 
 func BenchmarkTruncIndexNew250(b *testing.B) {
 	var testSet []string
-	for i := 0; i < 250; i++ {
+	for range 250 {
 		testSet = append(testSet, stringid.GenerateNonCryptoID())
 	}
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for range b.N {
 		NewTruncIndex(testSet)
 	}
 }
 
 func BenchmarkTruncIndexNew500(b *testing.B) {
 	var testSet []string
-	for i := 0; i < 500; i++ {
+	for range 500 {
 		testSet = append(testSet, stringid.GenerateNonCryptoID())
 	}
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for range b.N {
 		NewTruncIndex(testSet)
 	}
 }
@@ -382,14 +379,14 @@ func BenchmarkTruncIndexNew500(b *testing.B) {
 func BenchmarkTruncIndexAddGet100(b *testing.B) {
 	var testSet []string
 	var testKeys []string
-	for i := 0; i < 500; i++ {
+	for range 500 {
 		id := stringid.GenerateNonCryptoID()
 		testSet = append(testSet, id)
-		l := rand.Intn(12) + 12
+		l := rand.IntN(12) + 12
 		testKeys = append(testKeys, id[:l])
 	}
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for range b.N {
 		index := NewTruncIndex([]string{})
 		for _, id := range testSet {
 			if err := index.Add(id); err != nil {
@@ -407,14 +404,14 @@ func BenchmarkTruncIndexAddGet100(b *testing.B) {
 func BenchmarkTruncIndexAddGet250(b *testing.B) {
 	var testSet []string
 	var testKeys []string
-	for i := 0; i < 500; i++ {
+	for range 500 {
 		id := stringid.GenerateNonCryptoID()
 		testSet = append(testSet, id)
-		l := rand.Intn(12) + 12
+		l := rand.IntN(12) + 12
 		testKeys = append(testKeys, id[:l])
 	}
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for range b.N {
 		index := NewTruncIndex([]string{})
 		for _, id := range testSet {
 			if err := index.Add(id); err != nil {
@@ -432,14 +429,14 @@ func BenchmarkTruncIndexAddGet250(b *testing.B) {
 func BenchmarkTruncIndexAddGet500(b *testing.B) {
 	var testSet []string
 	var testKeys []string
-	for i := 0; i < 500; i++ {
+	for range 500 {
 		id := stringid.GenerateNonCryptoID()
 		testSet = append(testSet, id)
-		l := rand.Intn(12) + 12
+		l := rand.IntN(12) + 12
 		testKeys = append(testKeys, id[:l])
 	}
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for range b.N {
 		index := NewTruncIndex([]string{})
 		for _, id := range testSet {
 			if err := index.Add(id); err != nil {

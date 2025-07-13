@@ -1,10 +1,10 @@
 //go:build !windows
-// +build !windows
 
 package idtools
 
 import (
 	"fmt"
+	"maps"
 	"os"
 	"path/filepath"
 	"testing"
@@ -192,9 +192,7 @@ func readTree(base, root string) (map[string]node, error) {
 			if err != nil {
 				return nil, err
 			}
-			for path, nodeinfo := range subtree {
-				tree[path] = nodeinfo
-			}
+			maps.Copy(tree, subtree)
 		}
 	}
 	return tree, nil
