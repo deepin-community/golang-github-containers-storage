@@ -1,5 +1,4 @@
 //go:build linux || freebsd
-// +build linux freebsd
 
 package graphtest
 
@@ -26,7 +25,7 @@ func DriverBenchExists(b *testing.B, drivername string, driveroptions ...string)
 	}
 
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for range b.N {
 		if !driver.Exists(base) {
 			b.Fatal("Newly created image doesn't exist")
 		}
@@ -45,7 +44,7 @@ func DriverBenchGetEmpty(b *testing.B, drivername string, driveroptions ...strin
 	}
 
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for range b.N {
 		_, err := driver.Get(base, graphdriver.MountOpts{})
 		b.StopTimer()
 		if err != nil {
@@ -73,7 +72,7 @@ func DriverBenchDiffBase(b *testing.B, drivername string, driveroptions ...strin
 	}
 
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for range b.N {
 		arch, err := driver.Diff(base, nil, "", nil, "")
 		if err != nil {
 			b.Fatal(err)
@@ -109,7 +108,7 @@ func DriverBenchDiffN(b *testing.B, bottom, top int, drivername string, driverop
 		b.Fatal(err)
 	}
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for range b.N {
 		arch, err := driver.Diff(upper, nil, "", nil, "")
 		if err != nil {
 			b.Fatal(err)
@@ -149,7 +148,7 @@ func DriverBenchDiffApplyN(b *testing.B, fileCount int, drivername string, drive
 	}
 	b.ResetTimer()
 	b.StopTimer()
-	for i := 0; i < b.N; i++ {
+	for range b.N {
 		diff := stringid.GenerateRandomID()
 		if err := driver.Create(diff, base, nil); err != nil {
 			b.Fatal(err)
@@ -203,7 +202,7 @@ func DriverBenchDeepLayerDiff(b *testing.B, layerCount int, drivername string, d
 	}
 
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for range b.N {
 		arch, err := driver.Diff(topLayer, nil, "", nil, "")
 		if err != nil {
 			b.Fatal(err)
@@ -247,7 +246,7 @@ func DriverBenchDeepLayerRead(b *testing.B, layerCount int, drivername string, d
 	}()
 
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for range b.N {
 
 		// Read content
 		c, err := os.ReadFile(filepath.Join(root, "testfile.txt"))

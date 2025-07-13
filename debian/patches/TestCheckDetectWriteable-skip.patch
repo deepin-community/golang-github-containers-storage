@@ -21,10 +21,10 @@ fails in this way:
  1 file changed, 3 insertions(+)
 
 diff --git a/check_test.go b/check_test.go
-index 2b37cf3..837c408 100644
+index 35a9425..f13952a 100644
 --- a/check_test.go
 +++ b/check_test.go
-@@ -77,6 +77,9 @@ func TestCheckDetectWriteable(t *testing.T) {
+@@ -73,6 +73,9 @@ func TestCheckDetectWriteable(t *testing.T) {
  		GraphRoot:       t.TempDir(),
  		GraphDriverName: "vfs",
  	})

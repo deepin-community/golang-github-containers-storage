@@ -2,6 +2,7 @@ package chunked
 
 import (
 	"bytes"
+	"fmt"
 	"io"
 	"os"
 	"path"
@@ -9,7 +10,7 @@ import (
 	"testing"
 
 	"github.com/containers/storage/pkg/archive"
-	"github.com/containers/storage/pkg/chunked/internal"
+	"github.com/containers/storage/pkg/chunked/internal/minimal"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -113,8 +114,8 @@ func TestSafeMkdir(t *testing.T) {
 	rootFd := int(rootFile.Fd())
 
 	metadata := fileMetadata{
-		FileMetadata: internal.FileMetadata{
-			Type: internal.TypeDir,
+		FileMetadata: minimal.FileMetadata{
+			Type: minimal.TypeDir,
 			Mode: 0o755,
 		},
 	}
@@ -123,11 +124,14 @@ func TestSafeMkdir(t *testing.T) {
 		IgnoreChownErrors: true,
 	}
 
+	err = safeMkdir(rootFd, 0o755, "/", &metadata, options)
+	require.NoError(t, err)
+
 	err = safeMkdir(rootFd, 0o755, dirName, &metadata, options)
 	require.NoError(t, err)
 
-	dir, err := openFileUnderRoot(rootFd, dirName, syscall.O_DIRECTORY, 0)
-	assert.NoError(t, err)
+	dir, err := openFileUnderRoot(rootFd, dirName, syscall.O_DIRECTORY|syscall.O_CLOEXEC, 0)
+	require.NoError(t, err)
 	err = dir.Close()
 	assert.NoError(t, err)
 }
@@ -149,11 +153,11 @@ func TestSafeLink(t *testing.T) {
 	assert.NoError(t, err)
 
 	metadata := fileMetadata{
-		FileMetadata: internal.FileMetadata{
+		FileMetadata: minimal.FileMetadata{
 			Name: linkName,
 			// try to create outside the root
 			Linkname: "../../" + existingFile,
-			Type:     internal.TypeReg,
+			Type:     minimal.TypeReg,
 			Mode:     0o755,
 		},
 	}
@@ -167,7 +171,7 @@ func TestSafeLink(t *testing.T) {
 
 	// validate it was created
 	newFile, err := openFileUnderRoot(rootFd, linkName, syscall.O_RDONLY, 0)
-	assert.NoError(t, err)
+	require.NoError(t, err)
 
 	st := syscall.Stat_t{}
 	err = syscall.Fstat(int(newFile.Fd()), &st)
@@ -202,11 +206,11 @@ func TestSafeSymlink(t *testing.T) {
 	existingFile := path.Base(file.Name())
 
 	metadata := fileMetadata{
-		FileMetadata: internal.FileMetadata{
+		FileMetadata: minimal.FileMetadata{
 			Name: linkName,
 			// try to create outside the root
 			Linkname: "../../" + existingFile,
-			Type:     internal.TypeReg,
+			Type:     minimal.TypeReg,
 			Mode:     0o755,
 		},
 	}
@@ -216,7 +220,7 @@ func TestSafeSymlink(t *testing.T) {
 
 	// validate it was created
 	newFile, err := openFileUnderRoot(rootFd, linkName, syscall.O_RDONLY, 0)
-	assert.NoError(t, err)
+	require.NoError(t, err)
 
 	st2 := syscall.Stat_t{}
 	err = syscall.Fstat(int(newFile.Fd()), &st2)
@@ -247,7 +251,7 @@ func TestOpenOrCreateDirUnderRoot(t *testing.T) {
 	err = dir.Close()
 	assert.NoError(t, err)
 
-	dir, err = openFileUnderRoot(rootFd, dirName, syscall.O_DIRECTORY, 0)
+	dir, err = openFileUnderRoot(rootFd, dirName, syscall.O_DIRECTORY|syscall.O_CLOEXEC, 0)
 	require.NoError(t, err)
 	err = dir.Close()
 	require.NoError(t, err)
@@ -276,9 +280,9 @@ func TestCopyFileContent(t *testing.T) {
 	require.NoError(t, err)
 
 	metadata := fileMetadata{
-		FileMetadata: internal.FileMetadata{
+		FileMetadata: minimal.FileMetadata{
 			Name: "new-file",
-			Type: internal.TypeDir,
+			Type: minimal.TypeDir,
 			Mode: 0o755,
 		},
 	}
@@ -300,9 +304,9 @@ func TestCopyFileContent(t *testing.T) {
 	assert.NotEqual(t, st.Ino, st2.Ino)
 
 	metadataCopyHardLinks := fileMetadata{
-		FileMetadata: internal.FileMetadata{
+		FileMetadata: minimal.FileMetadata{
 			Name: "new-file2",
-			Type: internal.TypeDir,
+			Type: minimal.TypeDir,
 			Mode: 0o755,
 		},
 	}
@@ -333,4 +337,50 @@ func createTempFile(t *testing.T, dir, name string) *os.File {
 	tmpFile, err := os.CreateTemp(dir, name)
 	require.NoError(t, err)
 	return tmpFile
+}
+
+func TestSplitPath(t *testing.T) {
+	tests := []struct {
+		path         string
+		expectedDir  string
+		expectedBase string
+	}{
+		{"", "/", "."},
+		{".", "/", "."},
+		{"..", "/", "."},
+		{"../..", "/", "."},
+		{"../../..", "/", "."},
+		{"../../../foo", "/", "foo"},
+		{"../../../foo/..", "/", "."},
+		{"../../../foo/./../foo/bar/baz", "/foo/bar", "baz"},
+		{"../../../foo/bar", "/foo", "bar"},
+		{"/", "/", "."},
+		{"/.", "/", "."},
+		{"/..", "/", "."},
+		{"////foo////bar////", "/foo", "bar"},
+		{"/foo", "/", "foo"},
+		{"/foo/", "/", "foo"},
+		{"/foo/bar", "/foo", "bar"},
+		{"/foo/bar/", "/foo", "bar"},
+		{"/foo/////bar/", "/foo", "bar"},
+		{"/home/foo/file.txt", "/home/foo", "file.txt"},
+		{"/home/foo////file.txt", "/home/foo", "file.txt"},
+		{"file", "/", "file"},
+		{"foo/", "/", "foo"},
+		{"foo/.", "/", "foo"},
+		{"foo/..", "/", "."},
+		{"foo/../../bar", "/", "bar"},
+		{"foo/bar/", "/foo", "bar"},
+		{"foo/bar/..", "/", "foo"},
+		{"foo/bar/../baz", "/foo", "baz"},
+		{"foo/bar/baz/", "/foo/bar", "baz"},
+		{"foo/file.txt", "/foo", "file.txt"},
+	}
+
+	for _, test := range tests {
+		dir, base, err := splitPath(test.path)
+		assert.NoError(t, err)
+		assert.Equal(t, test.expectedDir, dir, fmt.Sprintf("path %q: expected dir %q, got %q", test.path, test.expectedDir, dir))
+		assert.Equal(t, test.expectedBase, base, fmt.Sprintf("path %q: expected base %q, got %q", test.path, test.expectedBase, base))
+	}
 }
