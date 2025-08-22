@@ -1,5 +1,4 @@
 //go:build linux
-// +build linux
 
 package aufs
 
@@ -759,7 +758,7 @@ func BenchmarkConcurrentAccess(b *testing.B) {
 	numConcurrent := 256
 	// create a bunch of ids
 	var ids []string
-	for i := 0; i < numConcurrent; i++ {
+	for range numConcurrent {
 		ids = append(ids, stringid.GenerateNonCryptoID())
 	}
 
@@ -789,7 +788,7 @@ func BenchmarkConcurrentAccess(b *testing.B) {
 				return
 			}
 			var innerGroup sync.WaitGroup
-			for i := 0; i < b.N; i++ {
+			for range b.N {
 				innerGroup.Add(1)
 				go func() {
 					if _, err := d.Get(id, graphdriver.MountOpts{}); err != nil {

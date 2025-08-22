@@ -3,6 +3,7 @@ package opts
 import (
 	"fmt"
 	"net"
+	"slices"
 	"strings"
 )
 
@@ -46,11 +47,10 @@ func (opts *ListOpts) Set(value string) error {
 
 // Delete removes the specified element from the slice.
 func (opts *ListOpts) Delete(key string) {
-	for i, k := range *opts.values {
-		if k == key {
-			(*opts.values) = append((*opts.values)[:i], (*opts.values)[i+1:]...)
-			return
-		}
+	if i := slices.IndexFunc(*opts.values, func(k string) bool {
+		return k == key
+	}); i != -1 {
+		(*opts.values) = slices.Delete(*opts.values, i, i+1)
 	}
 }
 
@@ -144,12 +144,8 @@ func (opts *MapOpts) Set(value string) error {
 		}
 		value = v
 	}
-	vals := strings.SplitN(value, "=", 2)
-	if len(vals) == 1 {
-		(opts.values)[vals[0]] = ""
-	} else {
-		(opts.values)[vals[0]] = vals[1]
-	}
+	key, val, _ := strings.Cut(value, "=")
+	opts.values[key] = val
 	return nil
 }
 

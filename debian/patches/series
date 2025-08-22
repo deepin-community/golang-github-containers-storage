@@ -1,2 +1,3 @@
 TestCheckDetectWriteable-skip.patch
 Skip-TestAttachLoopbackDeviceRace.patch
+0003-TestStoreMultiList-Skip-if-not-running-as-root.patch

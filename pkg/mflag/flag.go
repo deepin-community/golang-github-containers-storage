@@ -86,6 +86,7 @@ import (
 	"io"
 	"os"
 	"runtime"
+	"slices"
 	"sort"
 	"strconv"
 	"strings"
@@ -356,14 +357,7 @@ func sortFlags(flags map[string]*Flag) []*Flag {
 			continue
 		}
 
-		found := false
-		for _, name := range list {
-			if name == fName {
-				found = true
-				break
-			}
-		}
-		if !found {
+		if !slices.Contains(list, fName) {
 			list = append(list, fName)
 		}
 	}
@@ -560,8 +554,10 @@ func (fs *FlagSet) PrintDefaults() {
 		if len(names) > 0 && len(flag.Usage) > 0 {
 			val := flag.DefValue
 
-			if home != "" && strings.HasPrefix(val, home) {
-				val = homedir.GetShortcutString() + val[len(home):]
+			if home != "" {
+				if relhome, ok := strings.CutPrefix(val, home); ok {
+					val = homedir.GetShortcutString() + relhome
+				}
 			}
 
 			if isZeroValue(val) {
