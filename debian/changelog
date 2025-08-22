@@ -1,3 +1,35 @@
+golang-github-containers-storage (1.57.2+ds1-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Reinhard Tartler <siretart@tauware.de>  Mon, 17 Mar 2025 21:13:19 -0400
+
+golang-github-containers-storage (1.57.1+ds1-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Reinhard Tartler <siretart@tauware.de>  Tue, 11 Feb 2025 06:39:44 -0500
+
+golang-github-containers-storage (1.56.1+ds1-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sun, 19 Jan 2025 15:44:54 -0500
+
+golang-github-containers-storage (1.56.0+ds1-2) unstable; urgency=medium
+
+  * Upload to unstable
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sun, 17 Nov 2024 09:55:54 -0500
+
+golang-github-containers-storage (1.56.0+ds1-1) experimental; urgency=medium
+
+  * New upstream release: v1.56.0
+  * bump dependency on golang-github-moby-sys-dev
+  * TestStoreMultiList: Skip if not running as root
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sat, 09 Nov 2024 07:33:18 -0500
+
 golang-github-containers-storage (1.55.1+ds1-1) unstable; urgency=medium
 
   * New upstream release: v1.55.1

@@ -1,0 +1,30 @@
+From: Reinhard Tartler <siretart@tauware.de>
+Date: Sat, 9 Nov 2024 07:28:37 -0500
+Subject: TestStoreMultiList: Skip if not running as root
+
+---
+ store_test.go | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/store_test.go b/store_test.go
+index d8a1ad2..1a61ad3 100644
+--- a/store_test.go
++++ b/store_test.go
+@@ -3,6 +3,7 @@ package storage
+ import (
+ 	"os"
+ 	"path/filepath"
++	"strings"
+ 	"testing"
+ 
+ 	"github.com/containers/storage/pkg/idtools"
+@@ -503,6 +504,9 @@ func TestStoreMultiList(t *testing.T) {
+ 	require.NoError(t, err)
+ 
+ 	_, err = store.CreateContainer("Container", nil, "Image", "", "", nil)
++	if strings.Contains(err.Error(), "operation not permitted") {
++		t.Skipf("Skipping test: %v", err)
++	}
+ 	require.NoError(t, err)
+ 
+ 	tests := []struct {
